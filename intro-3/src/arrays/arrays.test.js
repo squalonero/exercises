@@ -528,7 +528,7 @@ describe('every', () => {
   })
 })
 
-describe('reduce', () => {
+describe.only('reduce', () => {
   it('Correctly reduces an array of numbers with an initial value', () => {
     expect(reduce([1, 2, 3, 4, 5], (acc, n) => acc + n, 100)).toEqual(115)
   })

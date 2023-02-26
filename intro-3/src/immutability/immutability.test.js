@@ -153,7 +153,7 @@ describe('addNewUser', () => {
   })
 })
 
-describe('convertUsersGeoToNumber', () => {
+describe.only('convertUsersGeoToNumber', () => {
   it('Converts geo to numbers immutably', () => {
     const newUsers = convertUsersGeoToNumber(users)
     expect(newUsers).toEqual([

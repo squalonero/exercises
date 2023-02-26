@@ -26,16 +26,60 @@ export const users = Object.freeze([user10])
 
 // addressChanges è un oggetto che contiene una o più proprietà di Address da cambiare, ad esempio { city: London }
 // Ritornare l'array di utenti con le proprietà cambiate, mantenendo invariate quelle non presenti in addressChanges
-export const changeUsersAddress = (users, addressChanges) => {}
+export const changeUsersAddress = (users, addressChanges) => {
+  return users.reduce((acc, { address, ...rest }) => {
+    return [
+      ...acc,
+      {
+        ...rest,
+        address: {
+          ...address,
+          ...addressChanges
+        }
+      }
+    ]
+  }, [])
+}
 
 // Ritornare l'array di utenti senza geo in address
-export const removeAddressCoordinates = (users) => {}
+export const removeAddressCoordinates = (users) => {
+  return users.reduce((acc, { address, ...rest }) => {
+    const { geo, ...addr } = address
+    return [
+      ...acc,
+      {
+        ...rest,
+        address: addr
+      }
+    ]
+  }, [])
+}
 
 // Ritornare l'array di utenti senza company
-export const removeCompanyInfo = (users) => {}
+export const removeCompanyInfo = (users) => {
+  return users.reduce((acc, { company, ...rest }) => {
+    return [...acc, { ...rest }]
+  }, [])
+}
 
 // Aggiungere newUser a users e ritornare l'array
-export const addNewUser = (users, newUser) => {}
+export const addNewUser = (users, newUser) => {
+  return [...users, { ...newUser }]
+}
 
 // Ritornare l'array di utenti con lat e lng dentro geo convertiti in numero, non stringa
-export const convertUsersGeoToNumber = (users) => {}
+export const convertUsersGeoToNumber = (users) => {
+  return users.map(({ address, ...user }) => {
+    const { geo } = address
+    return {
+      ...user,
+      address: {
+        ...address,
+        geo: {
+          lat: parseFloat(geo.lat),
+          lng: parseFloat(geo.lng)
+        }
+      }
+    }
+  })
+}
