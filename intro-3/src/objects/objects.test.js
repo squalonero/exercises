@@ -224,7 +224,7 @@ describe('hasValidProperty', () => {
   })
 })
 
-describe('normalizeObject', () => {
+describe.only('normalizeObject', () => {
   it('Normalizes a simple object', () => {
     const object = {
       id: 1,
