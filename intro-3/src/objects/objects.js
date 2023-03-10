@@ -98,61 +98,27 @@ export function hasValidProperty(object, predicate) {
 // Ritornare un array con i due oggetti (vedere il test per altri esempi)
 // Idealmente dovrebbe funzionare per ogni oggetto trovato dentro l'oggetto di partenza, anche quelli annidati
 export function normalizeObject(object) {
-  // this Works
-  //   const Obj1 = {}
-  //   const Obj2 = {}
-
-  //   function normRecursive(obj) {
-  //     for (const [k, v] of Object.entries(obj)) {
-  //       if (typeof v === 'object') {
-  //         Obj2[v.id] = v
-  //         Obj2[obj.id][`${k}Id`] = v.id
-  //         delete Obj2[obj.id][k]
-  //         normRecursive(Obj2[v.id])
-  //       }
-  //     }
-  //   }
-
-  //   for (const [key, val] of Object.entries(object)) {
-  //     if (typeof val === 'object') {
-  //       Obj1[`${key}Id`] = val.id
-  //       Obj2[val.id] = val
-  //       normRecursive(val)
-  //     } else {
-  //       Obj1[key] = val
-  //     }
-  //   }
-  //   return [Obj1, Obj2]
-
   function reCache(obj, cached) {
-    cached[obj.id] = { ...obj }
     return Object.entries(obj).reduce((acc, [k, v]) => {
       if (typeof v === 'object') {
         return {
           ...acc,
-          //[v.id]: obj[k],
+          ...reCache(v, acc),
           [obj.id]: {
-            //...cached[obj.id],
+            ...acc[obj.id],
             [`${k}Id`]: v.id
-          },
-          ...reCache(v, acc)
+          }
         }
       } else {
-        return { ...acc }
+        return {
+          ...acc,
+          [obj.id]: {
+            ...acc[obj.id],
+            [k]: v
+          }
+        }
       }
     }, cached)
-    // for (const [k, v] of Object.entries(obj)) {
-    //   if (typeof v === 'object') {
-    //     cached[obj.id] = obj
-    //     cached[obj.id][`${k}Id`] = v.id
-    //     cached[v.id] = obj[k]
-    //     delete cached[obj.id][k]
-    //     reCache(v, cached)
-    //   }
-    // }
-    // return {
-    //   ...cached
-    // }
   }
 
   return Object.entries(object).reduce(
